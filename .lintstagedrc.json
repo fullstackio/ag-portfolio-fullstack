@@ -1,16 +1,4 @@
 {
-  "apps/web/**/*.{ts,tsx,js,jsx}": [
-    "eslint --fix --no-warn-ignored --config apps/web/eslint.config.mjs"
-  ],
-  "apps/admin/**/*.{ts,tsx,js,jsx}": [
-    "eslint --fix --no-warn-ignored --config apps/admin/eslint.config.mjs"
-  ],
-  "apps/api/**/*.ts": ["eslint --fix --no-warn-ignored --config apps/api/eslint.config.js"],
-  "packages/shared/**/*.{ts,tsx,js,jsx}": [
-    "eslint --fix --no-warn-ignored --config packages/shared/eslint.config.js"
-  ],
-  "packages/ui/**/*.{ts,tsx,js,jsx}": [
-    "eslint --fix --no-warn-ignored --config packages/ui/eslint.config.js"
-  ],
+  "**/*.{ts,tsx,js,jsx}": ["eslint --fix --no-warn-ignored"],
   "**/*.{ts,tsx,js,jsx,json,md,yml,yaml}": ["prettier --write"]
 }

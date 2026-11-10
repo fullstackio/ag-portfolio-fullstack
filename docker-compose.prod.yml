@@ -21,60 +21,29 @@ services:
       timeout: 5s
       retries: 5
 
-  api:
+  app:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: Dockerfile
       target: production
     restart: always
     environment:
       NODE_ENV: production
-      PORT: 4000
-      API_PREFIX: ${API_PREFIX:-api/v1}
+      PORT: 3000
       CORS_ORIGINS: ${CORS_ORIGINS}
       MONGODB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
       MONGODB_DATABASE: ${MONGODB_DATABASE}
-      THROTTLE_TTL: ${THROTTLE_TTL:-60000}
-      THROTTLE_LIMIT: ${THROTTLE_LIMIT:-100}
     depends_on:
       mongo:
         condition: service_healthy
     networks:
       - ag-portfolio
     healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://localhost:4000/api/v1/health']
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/v1/health']
       interval: 15s
       timeout: 5s
       retries: 5
       start_period: 20s
-
-  web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-      target: production
-    restart: always
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    depends_on:
-      - api
-    networks:
-      - ag-portfolio
-
-  admin:
-    build:
-      context: .
-      dockerfile: apps/admin/Dockerfile
-      target: production
-    restart: always
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    depends_on:
-      - api
-    networks:
-      - ag-portfolio
 
   nginx:
     build:
@@ -86,9 +55,7 @@ services:
     volumes:
       - ./docker/nginx/certs:/etc/nginx/certs:ro
     depends_on:
-      - web
-      - admin
-      - api
+      - app
     networks:
       - ag-portfolio
 

@@ -7,9 +7,6 @@ on:
       - main
       - development
 
-env:
-  TURBO_TELEMETRY_DISABLED: 1
-
 jobs:
   lint:
     name: Lint
@@ -64,6 +61,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
         env:
-          NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
           MONGODB_URI: mongodb://localhost:27017
           MONGODB_DATABASE: ag_portfolio
