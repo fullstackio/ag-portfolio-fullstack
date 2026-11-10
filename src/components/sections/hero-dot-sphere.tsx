@@ -33,11 +33,10 @@ export function HeroDotSphere() {
     resize();
     window.addEventListener('resize', resize);
 
-    const foreground =
-      getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() ||
-      '#080503';
-
     const draw = () => {
+      const foreground =
+        getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() ||
+        '#080503';
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 

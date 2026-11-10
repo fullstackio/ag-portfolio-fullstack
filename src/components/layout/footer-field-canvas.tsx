@@ -31,6 +31,9 @@ export function FooterFieldCanvas() {
     window.addEventListener('resize', resize);
 
     const draw = () => {
+      const foreground =
+        getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() ||
+        '#080503';
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
       ctx.font = '14px monospace';
@@ -52,8 +55,8 @@ export function FooterFieldCanvas() {
             1;
           const normalized = value / 2;
           const charIndex = Math.floor(normalized * (CHARS.length - 1));
-          const opacity = 0.15 + 0.5 * normalized;
-          ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`;
+          ctx.globalAlpha = 0.15 + 0.5 * normalized;
+          ctx.fillStyle = foreground;
           ctx.fillText(CHARS[charIndex] ?? CHARS[0]!, x, y);
         }
       }
