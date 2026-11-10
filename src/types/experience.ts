@@ -4,9 +4,6 @@ export interface ExperienceEntry {
   company: string;
   dateRange: string;
   current?: boolean;
-}
-
-export interface ExperienceLogLine {
-  id: string;
-  text: string;
+  /** Lines shown in the terminal panel when this role is selected. */
+  logLines: string[];
 }

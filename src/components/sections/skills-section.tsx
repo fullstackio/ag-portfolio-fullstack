@@ -1,4 +1,5 @@
 import { SectionContainer } from '../layout/section-container';
+import { Reveal } from '../motion/reveal';
 
 import { skills } from '@/data/skills';
 import { cn } from '@/lib/utils';
@@ -18,7 +19,7 @@ export function SkillsSection() {
   return (
     <SectionContainer id="skills" className="relative overflow-hidden py-24 lg:py-32">
       <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
-        <div>
+        <Reveal direction="left">
           <span className="text-muted-foreground mb-6 inline-flex items-center gap-3 font-mono text-sm">
             <span className="bg-foreground/30 h-px w-8" aria-hidden="true" />
             What I do
@@ -42,9 +43,13 @@ export function SkillsSection() {
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
 
-        <div className="border-foreground/10 bg-background overflow-hidden rounded-2xl border">
+        <Reveal
+          direction="right"
+          delayMs={200}
+          className="border-foreground/10 bg-background overflow-hidden rounded-2xl border"
+        >
           <div className="border-foreground/10 bg-foreground/5 flex items-center justify-between border-b px-6 py-4">
             <span className="text-muted-foreground font-mono text-sm">Tech Stack</span>
             <div className="flex gap-1.5">
@@ -81,7 +86,7 @@ export function SkillsSection() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </SectionContainer>
   );

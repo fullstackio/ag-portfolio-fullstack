@@ -1,5 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 
+import { Reveal } from '../motion/reveal';
+
 import { ProjectPreview } from './project-preview';
 import { TechnologyTags } from './technology-tags';
 
@@ -21,7 +23,10 @@ export function ProjectRow({
   const sequence = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
 
   return (
-    <div className="group border-foreground/10 grid items-center gap-8 border-b py-16 last:border-b-0 lg:grid-cols-2 lg:gap-16 lg:py-24">
+    <Reveal
+      delayMs={80 * index}
+      className="group border-foreground/10 grid items-center gap-8 border-b py-16 last:border-b-0 lg:grid-cols-2 lg:gap-16 lg:py-24"
+    >
       <div className={cn(reverse ? 'lg:order-last' : '')}>
         <ProjectPreview project={project} />
       </div>
@@ -49,6 +54,6 @@ export function ProjectRow({
           </span>
         )}
       </div>
-    </div>
+    </Reveal>
   );
 }

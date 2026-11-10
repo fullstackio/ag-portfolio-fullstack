@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { CopyrightYear } from './copyright-year';
+import { FooterFieldCanvas } from './footer-field-canvas';
 import { SectionContainer } from './section-container';
 
 const BUILD_YEAR = new Date().getFullYear();
@@ -21,7 +22,14 @@ const SOCIAL_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-foreground/10 relative border-t" id="contact">
-      <SectionContainer className="flex flex-col items-center py-16 text-center lg:py-24">
+      <div
+        className="pointer-events-none absolute inset-0 h-64 overflow-hidden opacity-20"
+        aria-hidden="true"
+      >
+        <FooterFieldCanvas />
+      </div>
+
+      <SectionContainer className="relative z-10 flex flex-col items-center py-16 text-center lg:py-24">
         <div className="mb-6 flex flex-col items-center gap-4">
           <span
             className="border-foreground/10 bg-surface font-heading flex size-20 items-center justify-center rounded-full border text-xl"
@@ -52,7 +60,7 @@ export function SiteFooter() {
         </nav>
       </SectionContainer>
 
-      <SectionContainer className="border-foreground/10 flex flex-col items-center justify-between gap-4 border-t py-8 md:flex-row">
+      <SectionContainer className="border-foreground/10 relative z-10 flex flex-col items-center justify-between gap-4 border-t py-8 md:flex-row">
         <p className="text-muted-foreground font-body text-sm">
           ©{' '}
           <Suspense fallback={BUILD_YEAR}>

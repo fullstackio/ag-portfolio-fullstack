@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { SectionContainer } from '../layout/section-container';
+import { Reveal } from '../motion/reveal';
 import { ProjectRow } from '../projects/project-row';
 
 import { projects } from '@/data/projects';
@@ -9,7 +10,7 @@ import { projects } from '@/data/projects';
 export function FeaturedProjectsSection() {
   return (
     <SectionContainer id="projects" className="relative overflow-hidden py-24 lg:py-32">
-      <div className="mb-4">
+      <Reveal className="mb-4">
         <span className="text-muted-foreground mb-6 inline-flex items-center gap-3 font-mono text-sm">
           <span className="bg-foreground/30 h-px w-8" aria-hidden="true" />
           Selected Work
@@ -28,7 +29,7 @@ export function FeaturedProjectsSection() {
             <ArrowUpRight className="size-3.5" aria-hidden="true" />
           </Link>
         </div>
-      </div>
+      </Reveal>
 
       <div>
         {projects.map((project, index) => (
@@ -42,7 +43,7 @@ export function FeaturedProjectsSection() {
         ))}
       </div>
 
-      <div className="mt-16 flex items-center justify-center">
+      <Reveal className="mt-16 flex items-center justify-center">
         <Link
           href="#all-projects"
           className="bg-foreground text-background hover:bg-foreground/90 group font-body inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium transition-all"
@@ -50,7 +51,7 @@ export function FeaturedProjectsSection() {
           See all {projects.length}+ projects
           <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-      </div>
+      </Reveal>
     </SectionContainer>
   );
 }
