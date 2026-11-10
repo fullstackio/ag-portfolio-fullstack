@@ -1,0 +1,7 @@
+{
+  "extends": "@ag-portfolio/typescript-config/react-library.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src"]
+}

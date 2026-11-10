@@ -1,0 +1,106 @@
+name: ag-portfolio-dev
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-change-me-root}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-ag_portfolio}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-ag_portfolio_app}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-change-me}
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo/init-mongo-user.js:/docker-entrypoint-initdb.d/init-mongo-user.js:ro
+    ports:
+      - '27017:27017'
+    networks:
+      - ag-portfolio
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: development
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: ${API_PORT:-4000}
+      API_PREFIX: ${API_PREFIX:-api/v1}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3001}
+      MONGODB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME:-root}:${MONGO_INITDB_ROOT_PASSWORD:-change-me-root}@mongo:27017
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-ag_portfolio}
+      THROTTLE_TTL: ${THROTTLE_TTL:-60000}
+      THROTTLE_LIMIT: ${THROTTLE_LIMIT:-100}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
+    ports:
+      - '${API_PORT:-4000}:4000'
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - ag-portfolio
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:4000/api/v1/health']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: development
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+    ports:
+      - '${WEB_PORT:-3000}:3000'
+    depends_on:
+      - api
+    networks:
+      - ag-portfolio
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+      target: development
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/admin/node_modules
+      - /app/apps/admin/.next
+    ports:
+      - '${ADMIN_PORT:-3001}:3001'
+    depends_on:
+      - api
+    networks:
+      - ag-portfolio
+
+networks:
+  ag-portfolio:
+    driver: bridge
+
+volumes:
+  mongo_data:
