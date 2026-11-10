@@ -2,14 +2,18 @@
 
 import { useEffect, useRef } from 'react';
 
+const CHARS = '░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯';
+
 /**
- * Decorative dotted cluster behind the hero copy (design/home.jpg). Rendered on a canvas so the
- * dots stay crisp at any size — a repeating CSS radial-gradient background produces visible
- * moiré/noise at this dot density. Static (one draw per resize), so it costs nothing on the main
- * thread after layout settles and has no interaction with prefers-reduced-motion.
+ * Rotating ASCII-character sphere behind the hero copy (design/home.jpg). Each point on a unit
+ * sphere is rotated on two axes per frame and projected to 2D; a monospace block/line-drawing
+ * character is picked per point by depth, then points are painter's-algorithm sorted (back to
+ * front) so nearer characters draw over farther ones and fade in as they rotate toward the
+ * viewer.
  */
 export function HeroDotSphere() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const frameRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -17,65 +21,80 @@ export function HeroDotSphere() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const draw = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
-      const { width, height } = parent.getBoundingClientRect();
+    let angle = 0;
+
+    const resize = () => {
       const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    };
+    resize();
+    window.addEventListener('resize', resize);
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, width, height);
+    const foreground =
+      getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() ||
+      '#080503';
 
-      const spacing = 13;
-      const radius = Math.min(width, height) / 2;
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const dotColor =
-        getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() ||
-        '#161616';
+    const draw = () => {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
 
-      for (let y = 0; y <= height; y += spacing) {
-        for (let x = 0; x <= width; x += spacing) {
-          const dx = x - centerX;
-          const dy = y - centerY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const normalized = distance / radius;
-          if (normalized > 1) continue;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const radius = 0.525 * Math.min(rect.width, rect.height);
 
-          // Denser/darker near the center, fading out toward the edge.
-          const falloff = Math.pow(1 - normalized, 1.6);
-          const opacity = falloff * 0.3;
-          if (opacity < 0.012) continue;
+      ctx.font = '12px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
-          // Thin out the grid near the edge so the cluster reads as a soft circle, not a hard disc.
-          const jitterKeep = normalized < 0.7 || (x + y) % (spacing * 2) === 0;
-          if (!jitterKeep) continue;
+      const points: { x: number; y: number; z: number; char: string }[] = [];
 
-          ctx.beginPath();
-          ctx.arc(x, y, 1.1, 0, Math.PI * 2);
-          ctx.fillStyle = dotColor;
-          ctx.globalAlpha = opacity;
-          ctx.fill();
+      for (let theta = 0; theta < 2 * Math.PI; theta += 0.15) {
+        for (let phi = 0; phi < Math.PI; phi += 0.15) {
+          const x0 = Math.sin(phi) * Math.cos(theta + 0.5 * angle);
+          const y0 = Math.sin(phi) * Math.sin(theta + 0.5 * angle);
+          const z0 = Math.cos(phi);
+
+          const u = 0.3 * angle;
+          const x1 = x0 * Math.cos(u) - z0 * Math.sin(u);
+          const z1 = x0 * Math.sin(u) + z0 * Math.cos(u);
+
+          const v = 0.2 * angle;
+          const y1 = y0 * Math.cos(v) - z1 * Math.sin(v);
+          const z2 = y0 * Math.sin(v) + z1 * Math.cos(v);
+
+          const charIndex = Math.floor(((z2 + 1) / 2) * (CHARS.length - 1));
+
+          points.push({
+            x: centerX + x1 * radius,
+            y: centerY + y1 * radius,
+            z: z2,
+            char: CHARS[charIndex] ?? '░',
+          });
         }
       }
+
+      points.sort((a, b) => a.z - b.z);
+      for (const point of points) {
+        ctx.globalAlpha = 0.2 + (point.z + 1) * 0.4;
+        ctx.fillStyle = foreground;
+        ctx.fillText(point.char, point.x, point.y);
+      }
       ctx.globalAlpha = 1;
+
+      angle += 0.02;
+      frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
 
-    const observer = new ResizeObserver(() => draw());
-    if (canvas.parentElement) observer.observe(canvas.parentElement);
-
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(frameRef.current);
+    };
   }, []);
 
-  return (
-    <div aria-hidden="true" className="relative h-full w-full">
-      <canvas ref={canvasRef} className="absolute inset-0" />
-    </div>
-  );
+  return <canvas ref={canvasRef} className="h-full w-full" style={{ display: 'block' }} />;
 }

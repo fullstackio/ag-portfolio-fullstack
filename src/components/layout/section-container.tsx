@@ -14,7 +14,7 @@ export function SectionContainer({
   id?: string;
 }) {
   return (
-    <Component id={id} className={cn('mx-auto w-full max-w-5xl px-6', className)}>
+    <Component id={id} className={cn('mx-auto w-full max-w-[1400px] px-6 lg:px-12', className)}>
       {children}
     </Component>
   );

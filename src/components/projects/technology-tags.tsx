@@ -4,7 +4,7 @@ export function TechnologyTags({ technologies }: { technologies: string[] }) {
       {technologies.map((tech) => (
         <li
           key={tech}
-          className="border-border bg-surface text-foreground/70 font-body rounded-full border px-3 py-1 text-xs"
+          className="bg-foreground/5 border-foreground/10 text-foreground/80 rounded-md border px-2.5 py-1 font-mono text-xs"
         >
           {tech}
         </li>

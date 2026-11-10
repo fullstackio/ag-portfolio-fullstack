@@ -8,28 +8,30 @@ export function ExperienceTerminal({
   currentPosition: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <div className="flex items-center gap-2" aria-hidden="true">
-          <span className="size-2.5 rounded-full bg-red-500/80" />
-          <span className="size-2.5 rounded-full bg-yellow-500/80" />
-          <span className="size-2.5 rounded-full bg-green-500/80" />
+    <div className="border-background/10 overflow-hidden rounded-xl border">
+      <div className="border-background/10 bg-background/5 flex items-center justify-between border-b px-6 py-4">
+        <div className="flex gap-2" aria-hidden="true">
+          <span className="size-3 rounded-full bg-red-500/50" />
+          <span className="size-3 rounded-full bg-yellow-500/50" />
+          <span className="size-3 rounded-full bg-green-500/50" />
         </div>
-        <span className="font-mono text-xs text-white/40">experience.log</span>
+        <span className="text-background/40 font-mono text-xs">experience.log</span>
       </div>
 
-      <div className="space-y-5 px-5 py-6 font-mono text-sm">
+      <div className="bg-background/5 min-h-[280px] p-8 font-mono text-sm">
         {lines.map((line) => (
-          <p key={line.id} className="leading-relaxed text-white/70">
-            <span className="mr-3 text-white/30">{line.id}</span>
-            {line.text}
+          <p key={line.id} className="text-background/70 mb-2 leading-loose">
+            <span className="text-background/40 mr-4 select-none">{line.id}</span>
+            <span className="text-background/90">{line.text}</span>
           </p>
         ))}
       </div>
 
-      <div className="flex items-center gap-2 border-t border-white/10 px-5 py-3">
-        <span className="size-2 rounded-full bg-green-500" aria-hidden="true" />
-        <span className="font-mono text-xs text-white/40">current_position: {currentPosition}</span>
+      <div className="border-background/10 bg-background/5 flex items-center gap-3 border-t px-6 py-4">
+        <span className="size-2 animate-pulse rounded-full bg-green-400" aria-hidden="true" />
+        <span className="text-background/40 font-mono text-xs">
+          current_position: {currentPosition}
+        </span>
       </div>
     </div>
   );

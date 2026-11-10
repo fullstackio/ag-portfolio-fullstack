@@ -4,36 +4,33 @@ import Link from 'next/link';
 import { SectionContainer } from '../layout/section-container';
 import { ProjectRow } from '../projects/project-row';
 
-import { Button } from '@/components/ui/button';
 import { projects } from '@/data/projects';
 
 export function FeaturedProjectsSection() {
   return (
-    <SectionContainer id="projects" className="py-20 md:py-28">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-muted-foreground font-mono text-xs">—</span>
-            <span className="text-muted-foreground font-mono text-xs tracking-wide">
-              Selected Work
-            </span>
-          </div>
-          <h2 className="font-heading text-3xl leading-tight font-medium sm:text-4xl">
+    <SectionContainer id="projects" className="relative overflow-hidden py-24 lg:py-32">
+      <div className="mb-4">
+        <span className="text-muted-foreground mb-6 inline-flex items-center gap-3 font-mono text-sm">
+          <span className="bg-foreground/30 h-px w-8" aria-hidden="true" />
+          Selected Work
+        </span>
+        <div className="border-foreground/10 flex flex-wrap items-end justify-between gap-4 border-b pb-8">
+          <h2 className="font-heading text-4xl tracking-tight lg:text-6xl">
             My featured
             <br />
-            <span className="text-primary">projects</span>
+            <span className="text-muted-foreground">projects</span>
           </h2>
+          <Link
+            href="#all-projects"
+            className="border-foreground/20 hover:bg-foreground/5 font-body mb-1 inline-flex shrink-0 items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all"
+          >
+            View all projects
+            <ArrowUpRight className="size-3.5" aria-hidden="true" />
+          </Link>
         </div>
-        <Link
-          href="#all-projects"
-          className="border-border bg-surface hover:bg-secondary font-body inline-flex items-center gap-1 rounded-full border px-4 py-2 text-xs transition-colors"
-        >
-          View all projects
-          <ArrowUpRight className="size-3.5" aria-hidden="true" />
-        </Link>
       </div>
 
-      <div className="divide-border mt-10 divide-y">
+      <div>
         {projects.map((project, index) => (
           <ProjectRow
             key={project.slug}
@@ -45,13 +42,14 @@ export function FeaturedProjectsSection() {
         ))}
       </div>
 
-      <div className="mt-6 flex justify-center">
-        <Button asChild size="lg" className="rounded-full">
-          <Link href="#all-projects">
-            See all {projects.length}+ projects
-            <ArrowUpRight className="size-4" aria-hidden="true" />
-          </Link>
-        </Button>
+      <div className="mt-16 flex items-center justify-center">
+        <Link
+          href="#all-projects"
+          className="bg-foreground text-background hover:bg-foreground/90 group font-body inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium transition-all"
+        >
+          See all {projects.length}+ projects
+          <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
       </div>
     </SectionContainer>
   );

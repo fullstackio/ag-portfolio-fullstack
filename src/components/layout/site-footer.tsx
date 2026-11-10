@@ -1,7 +1,6 @@
-import { Linkedin } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { SiGithub, SiX, SiYoutube } from 'react-icons/si';
 
 import { CopyrightYear } from './copyright-year';
 import { SectionContainer } from './section-container';
@@ -11,76 +10,59 @@ const BUILD_YEAR = new Date().getFullYear();
 /**
  * Real social URLs are not yet supplied by the owner (docs/tasks.md "Open questions").
  * `href="#"` is a visible placeholder rather than a working destination — replace once
- * confirmed. LinkedIn uses lucide-react's icon (deprecated upstream but functional) since
- * the installed simple-icons bundle ships no LinkedIn mark.
+ * confirmed.
  */
 const SOCIAL_LINKS = [
-  { label: 'GitHub', href: '#', icon: SiGithub },
-  { label: 'LinkedIn', href: '#', icon: Linkedin },
-  { label: 'YouTube', href: '#', icon: SiYoutube },
-  { label: 'X (Twitter)', href: '#', icon: SiX },
-];
-
-const FOOTER_NAV_LINKS = [
-  { label: 'Work', href: '#projects' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'About', href: '#about' },
-  { label: 'Blog', href: '#blog' },
+  { label: 'LinkedIn', href: '#' },
+  { label: 'GitHub', href: '#' },
+  { label: 'YouTube', href: '#' },
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="border-border border-t">
-      <SectionContainer className="flex flex-col items-center gap-5 py-16 text-center">
-        <Link
-          href="#top"
-          className="border-border bg-surface font-heading flex size-12 items-center justify-center rounded-full border text-sm font-medium"
-        >
-          AG
-        </Link>
-        <div>
-          <p className="font-body text-base font-medium">Avijit Ghosh</p>
-          <p className="text-muted-foreground font-body mt-1 text-sm">Software Engineer</p>
+    <footer className="border-foreground/10 relative border-t" id="contact">
+      <SectionContainer className="flex flex-col items-center py-16 text-center lg:py-24">
+        <div className="mb-6 flex flex-col items-center gap-4">
+          <span
+            className="border-foreground/10 bg-surface font-heading flex size-20 items-center justify-center rounded-full border text-xl"
+            aria-hidden="true"
+          >
+            AG
+          </span>
+          <p className="font-heading mt-2 text-3xl">Avijit Ghosh</p>
         </div>
+        <p className="text-muted-foreground font-body mb-8 max-w-md text-xl leading-relaxed">
+          Software Engineer
+        </p>
 
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-6">
-          {FOOTER_NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-muted-foreground hover:text-foreground font-body text-sm transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav aria-label="Social media links">
+          <ul className="flex list-none justify-center gap-6">
+            {SOCIAL_LINKS.map((social) => (
+              <li key={social.label}>
+                <Link
+                  href={social.href}
+                  className="text-foreground/70 hover:text-foreground group font-body flex items-center gap-1 text-sm transition-colors"
+                >
+                  {social.label}
+                  <ArrowUpRight className="size-3 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
-
-        <div className="flex items-center gap-4">
-          {SOCIAL_LINKS.map((social) => (
-            <Link
-              key={social.label}
-              href={social.href}
-              aria-label={social.label}
-              className="text-foreground/70 hover:text-foreground transition-colors"
-            >
-              <social.icon className="size-5" aria-hidden="true" />
-            </Link>
-          ))}
-        </div>
       </SectionContainer>
 
-      <SectionContainer className="border-border flex flex-col items-center justify-between gap-2 border-t py-6 sm:flex-row">
-        <p className="text-muted-foreground font-body text-xs">
+      <SectionContainer className="border-foreground/10 flex flex-col items-center justify-between gap-4 border-t py-8 md:flex-row">
+        <p className="text-muted-foreground font-body text-sm">
           ©{' '}
           <Suspense fallback={BUILD_YEAR}>
             <CopyrightYear />
           </Suspense>{' '}
           Avijit Ghosh. All rights reserved.
         </p>
-        <span className="flex items-center gap-1.5">
-          <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" />
-          <span className="text-muted-foreground font-mono text-xs">Open to new projects</span>
+        <span className="text-muted-foreground font-body flex items-center gap-2 text-sm">
+          <span className="size-2 rounded-full bg-green-500" aria-hidden="true" />
+          Open to new projects
         </span>
       </SectionContainer>
     </footer>
