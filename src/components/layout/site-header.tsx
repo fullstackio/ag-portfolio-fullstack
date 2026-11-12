@@ -9,10 +9,13 @@ import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { label: 'Home', href: '#top' },
-  { label: 'Work', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
+  { label: 'Home', href: '/' },
+  { label: 'My Work', href: '/work' },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'Skills', href: '/#skills' },
+  { label: 'Blogs', href: '/blogs' },
+  { label: 'Why Avi?', href: '/why-avi' },
+  { label: 'FAQ', href: '/faq' },
 ];
 
 export function SiteHeader() {
@@ -49,7 +52,7 @@ export function SiteHeader() {
           )}
         >
           <Link
-            href="#top"
+            href="/"
             className={cn(
               'font-heading tracking-tight transition-all duration-500',
               isScrolled ? 'text-xl' : 'text-2xl',

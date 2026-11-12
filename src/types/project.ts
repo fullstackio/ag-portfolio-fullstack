@@ -1,6 +1,10 @@
 export interface Project {
   slug: string;
   title: string;
+  /** Short label shown as a badge over the preview image, e.g. "Full-Stack". */
+  category: string;
+  /** Display-only month/year badge, e.g. "June 2025". Placeholder until real dates are supplied. */
+  date: string;
   description: string;
   technologies: string[];
   previewImage: {

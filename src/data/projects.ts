@@ -2,13 +2,15 @@ import type { Project } from '@/types/project';
 
 /**
  * Sourced from the approved mockup (design/mockup/AG-Portfolio-Fullpage-Mockup.png).
- * `caseStudyHref` is intentionally `null` until the owner supplies real case-study
- * destinations — see docs/tasks.md "Open questions". Do not invent URLs here.
+ * `caseStudyHref` points at the matching post in `src/data/blogs.ts`.
+ * `date` is a placeholder for visual layout only — replace with real dates when known.
  */
 export const projects: Project[] = [
   {
     slug: 'idot-ai',
     title: 'iDot AI — All-in-One AI Platform',
+    category: 'AI & LLMs',
+    date: 'August 2025',
     description:
       'A modern AI platform with chat, code generation, image creation, document processing and multi-language support.',
     technologies: ['Next.js', 'NestJS', 'AI', 'OpenAI', 'Claude'],
@@ -18,11 +20,13 @@ export const projects: Project[] = [
       width: 906,
       height: 429,
     },
-    caseStudyHref: null,
+    caseStudyHref: '/blogs/idot-ai-platform',
   },
   {
     slug: 'ag-appliance-services',
     title: 'AG Appliance Services',
+    category: 'Service Management',
+    date: 'May 2025',
     description:
       'Service management platform for appliance repair (AMC, jobs, billing, stock & reports) built with Next.js and NestJS.',
     technologies: ['Next.js', 'NestJS', 'MongoDB', 'Redis'],
@@ -32,11 +36,13 @@ export const projects: Project[] = [
       width: 957,
       height: 414,
     },
-    caseStudyHref: null,
+    caseStudyHref: '/blogs/ag-appliance-services',
   },
   {
     slug: 'port-of-subs',
     title: 'Port Of Subs',
+    category: 'WordPress & ADA',
+    date: 'February 2025',
     description:
       'WordPress platform with ADA compliance improvements, PageSpeed 90+, and ongoing enhancements.',
     technologies: ['WordPress', 'ADA', 'Performance'],
@@ -46,11 +52,13 @@ export const projects: Project[] = [
       width: 951,
       height: 417,
     },
-    caseStudyHref: null,
+    caseStudyHref: '/blogs/port-of-subs-ada-performance',
   },
   {
     slug: 'ntooitive',
     title: 'Ntooitive',
+    category: 'WordPress & SEO',
+    date: 'November 2024',
     description:
       'ADA improvements, performance optimization and SEO enhancements for a business CMS site.',
     technologies: ['WordPress', 'ACF', 'ADA', 'SEO'],
@@ -60,6 +68,6 @@ export const projects: Project[] = [
       width: 987,
       height: 390,
     },
-    caseStudyHref: null,
+    caseStudyHref: '/blogs/ntooitive-ada-seo',
   },
 ];
