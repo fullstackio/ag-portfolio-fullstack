@@ -28,6 +28,15 @@ export function HeroSection() {
 
   return (
     <section className="relative flex min-h-screen flex-col justify-center overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden opacity-60"
+        aria-hidden="true"
+      >
+        <div className="hero-glow hero-glow-1 top-[-10%] right-[5%] h-[500px] w-[500px] lg:h-[650px] lg:w-[650px]" />
+        <div className="hero-glow hero-glow-2 top-[20%] right-[25%] h-[450px] w-[450px] lg:h-[600px] lg:w-[600px]" />
+        <div className="hero-glow hero-glow-3 bottom-[-15%] left-[10%] h-[400px] w-[400px] lg:h-[550px] lg:w-[550px]" />
+      </div>
+
       <div className="pointer-events-none absolute top-1/2 right-0 h-[600px] w-[600px] -translate-y-1/2 opacity-40 lg:h-[800px] lg:w-[800px]">
         <HeroDotSphere />
       </div>
